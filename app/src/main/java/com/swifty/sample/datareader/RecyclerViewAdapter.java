@@ -1,7 +1,6 @@
 package com.swifty.sample.datareader;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +10,17 @@ import android.widget.TextView;
 
 import com.swifty.datareader.AppDataReader;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by swifty on 3/3/2017.
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<ApplicationInfo> myDataList;
+    private List<AppData> myDataList;
     private AppDataReader appDataReader;
 
-    public RecyclerViewAdapter(Context context, ArrayList<ApplicationInfo> myDataList) {
+    public RecyclerViewAdapter(Context context, List<AppData> myDataList) {
 
         appDataReader = new AppDataReader(context);
         this.myDataList = myDataList;
@@ -37,27 +36,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (position == 0) {
-            holder.icon.setImageDrawable(null);
-            holder.appname.setText("total");
-            holder.dataReceived.setText("Data Received :" + appDataReader.getTotalReceived());
-            holder.dataTransmitted.setText("Data Transmitted :" + appDataReader.getTotalTransmitted());
-            holder.packetsReceived.setText("Packets Received :" + appDataReader.getTotalPacketsReceived());
-            holder.packetsTransmitted.setText("Packets Transmitted :" + appDataReader.getTotalPacketsTransmitted());
-        } else {
-            holder.icon.setImageDrawable(appDataReader.getAppIcon(myDataList.get(position)));
-            holder.appname.setText(appDataReader.getAppName(myDataList.get(position)));
-            holder.dataReceived.setText("Data Received :" + appDataReader.getReceivedData(myDataList.get(position + 1).uid));
-            holder.dataTransmitted.setText("Data Transmitted :" + appDataReader.getDataTransmitted(myDataList.get(position + 1).uid));
-            holder.packetsReceived.setText("Packets Received :" + appDataReader.getPacketsReceived(myDataList.get(position + 1).uid));
-            holder.packetsTransmitted.setText("Packets Transmitted :" + appDataReader.getPacketsTransmitted(myDataList.get(position + 1).uid));
-        }
+        holder.icon.setImageDrawable(appDataReader.getAppIcon(myDataList.get(position).packageName));
+        holder.appname.setText(myDataList.get(position).appName);
+        holder.dataReceived.setText("Data Received :" + myDataList.get(position).received);
+        holder.dataTransmitted.setText("Data Transmitted :" + myDataList.get(position).transmitted);
+        holder.packetsReceived.setText("Packets Received :" + myDataList.get(position).packageReceived);
+        holder.packetsTransmitted.setText("Packets Transmitted :" + myDataList.get(position).packageTransmitted);
     }
 
 
     @Override
     public int getItemCount() {
-        return myDataList.size() + 1;
+        return myDataList.size();
     }
 
 

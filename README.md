@@ -1,6 +1,6 @@
 
 <h1>AppNetworkDataReader</h1>
-a network data reader lib can fully support all version of android.
+<h2>a network data reader lib can fully support all version of android.(above Android 6.0 permission required)</h2>
 
 [![](https://jitpack.io/v/SwiftyWang/AppNetworkDataReader.svg)](https://jitpack.io/#SwiftyWang/AppNetworkDataReader)
 
@@ -16,7 +16,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```java
 	dependencies {
-	        compile 'com.github.SwiftyWang:AppNetworkDataReader:v0.01'
+	        compile 'com.github.SwiftyWang:AppNetworkDataReader:0.01'
 	}
 ```
 
@@ -37,4 +37,35 @@ if (AppDataReader.checkPermission(this)) {
             startActivity(intent);
         }
 
+```
+
+<h2>all public api</h2>
+```java
+    /*
+             *  Get network data received in bytes
+             */
+    long getReceivedData(int uid);
+
+    /*
+         *  Get network data transmitted in application
+         */
+    long getDataTransmitted(int uid);
+
+    /*
+         *  Get network packets received in application
+         */
+    long getPacketsReceived(int uid);
+
+    /*
+         *  Get network packets transmitted in application.
+         */
+    long getPacketsTransmitted(int uid);
+
+    long getTotalReceived();
+
+    long getTotalTransmitted();
+
+    long getTotalPacketsReceived();
+
+    long getTotalPacketsTransmitted();
 ```
