@@ -2,6 +2,9 @@
 <h1>AppNetworkDataReader</h1>
 <h2>a network data reader lib can fully support all version of android.(above Android 6.0 permission required)</h2>
 
+![screen-gif](./20170306_175022.png)
+
+<h2>How to implement</h2>
 [![](https://jitpack.io/v/SwiftyWang/AppNetworkDataReader.svg)](https://jitpack.io/#SwiftyWang/AppNetworkDataReader)
 
 Add it in your root build.gradle at the end of repositories:
