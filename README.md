@@ -2,7 +2,7 @@
 <h1>AppNetworkDataReader</h1>
 <h2>a network data reader lib can fully support all version of android.(above Android 6.0 permission required)</h2>
 
-![](./20170306_175022.png =250x)
+<img src="./20170306_175022.png" width="200"/>
 
 <h2>How to implement</h2>
 [![](https://jitpack.io/v/SwiftyWang/AppNetworkDataReader.svg)](https://jitpack.io/#SwiftyWang/AppNetworkDataReader)
