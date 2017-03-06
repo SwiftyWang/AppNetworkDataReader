@@ -25,4 +25,11 @@ public interface IReader {
          */
     long getPacketsTransmitted(int uid);
 
+    long getTotalReceived();
+
+    long getTotalTransmitted();
+
+    long getTotalPacketsReceived();
+
+    long getTotalPacketsTransmitted();
 }

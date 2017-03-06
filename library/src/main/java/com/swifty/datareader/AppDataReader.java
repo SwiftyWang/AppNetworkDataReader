@@ -71,6 +71,26 @@ public class AppDataReader implements IReader {
         return iReader.getPacketsTransmitted(uid);
     }
 
+    @Override
+    public long getTotalReceived() {
+        return iReader.getTotalReceived();
+    }
+
+    @Override
+    public long getTotalTransmitted() {
+        return iReader.getTotalTransmitted();
+    }
+
+    @Override
+    public long getTotalPacketsReceived() {
+        return iReader.getTotalPacketsReceived();
+    }
+
+    @Override
+    public long getTotalPacketsTransmitted() {
+        return iReader.getTotalPacketsTransmitted();
+    }
+
     public List<ApplicationInfo> getApplicationMeta() {
         return packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
     }

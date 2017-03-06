@@ -104,6 +104,62 @@ public class V23DataReader implements IReader {
         return bucket.getTxPackets();
     }
 
+    @Override
+    public long getTotalReceived() {
+        NetworkStats.Bucket bucket;
+        try {
+            bucket = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_MOBILE,
+                    getSubscriberId(context, ConnectivityManager.TYPE_MOBILE),
+                    0,
+                    System.currentTimeMillis());
+        } catch (RemoteException e) {
+            return -1;
+        }
+        return bucket.getRxBytes();
+    }
+
+    @Override
+    public long getTotalTransmitted() {
+        NetworkStats.Bucket bucket;
+        try {
+            bucket = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_MOBILE,
+                    getSubscriberId(context, ConnectivityManager.TYPE_MOBILE),
+                    0,
+                    System.currentTimeMillis());
+        } catch (RemoteException e) {
+            return -1;
+        }
+        return bucket.getTxBytes();
+    }
+
+    @Override
+    public long getTotalPacketsReceived() {
+        NetworkStats.Bucket bucket;
+        try {
+            bucket = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_MOBILE,
+                    getSubscriberId(context, ConnectivityManager.TYPE_MOBILE),
+                    0,
+                    System.currentTimeMillis());
+        } catch (RemoteException e) {
+            return -1;
+        }
+        return bucket.getRxPackets();
+    }
+
+    @Override
+    public long getTotalPacketsTransmitted() {
+        NetworkStats.Bucket bucket;
+        try {
+            bucket = networkStatsManager.querySummaryForDevice(ConnectivityManager.TYPE_MOBILE,
+                    getSubscriberId(context, ConnectivityManager.TYPE_MOBILE),
+                    0,
+                    System.currentTimeMillis());
+        } catch (RemoteException e) {
+            return -1;
+        }
+        return bucket.getTxPackets();
+    }
+
     private String getSubscriberId(Context context, int networkType) {
         if (ConnectivityManager.TYPE_MOBILE == networkType) {
             TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);

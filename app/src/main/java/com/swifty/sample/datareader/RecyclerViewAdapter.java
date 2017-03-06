@@ -37,20 +37,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
-        holder.icon.setImageDrawable(appDataReader.getAppIcon(myDataList.get(position)));
-        holder.appname.setText(appDataReader.getAppName(myDataList.get(position)));
-        holder.dataReceived.setText("Data Received :" + appDataReader.getReceivedData(myDataList.get(position).uid));
-        holder.dataTransmitted.setText("Data Transmitted :" + appDataReader.getDataTransmitted(myDataList.get(position).uid));
-        holder.packetsReceived.setText("Packets Received :" + appDataReader.getPacketsReceived(myDataList.get(position).uid));
-        holder.packetsTransmitted.setText("Packets Transmitted :" + appDataReader.getPacketsTransmitted(myDataList.get(position).uid));
-
+        if (position == 0) {
+            holder.icon.setImageDrawable(null);
+            holder.appname.setText("total");
+            holder.dataReceived.setText("Data Received :" + appDataReader.getTotalReceived());
+            holder.dataTransmitted.setText("Data Transmitted :" + appDataReader.getTotalTransmitted());
+            holder.packetsReceived.setText("Packets Received :" + appDataReader.getTotalPacketsReceived());
+            holder.packetsTransmitted.setText("Packets Transmitted :" + appDataReader.getTotalPacketsTransmitted());
+        } else {
+            holder.icon.setImageDrawable(appDataReader.getAppIcon(myDataList.get(position)));
+            holder.appname.setText(appDataReader.getAppName(myDataList.get(position)));
+            holder.dataReceived.setText("Data Received :" + appDataReader.getReceivedData(myDataList.get(position + 1).uid));
+            holder.dataTransmitted.setText("Data Transmitted :" + appDataReader.getDataTransmitted(myDataList.get(position + 1).uid));
+            holder.packetsReceived.setText("Packets Received :" + appDataReader.getPacketsReceived(myDataList.get(position + 1).uid));
+            holder.packetsTransmitted.setText("Packets Transmitted :" + appDataReader.getPacketsTransmitted(myDataList.get(position + 1).uid));
+        }
     }
 
 
     @Override
     public int getItemCount() {
-        return myDataList.size();
+        return myDataList.size() + 1;
     }
 
 

@@ -68,4 +68,24 @@ public class BelowV21DataReader implements IReader {
 
         return TrafficStats.getUidTxPackets(uid);
     }
+
+    @Override
+    public long getTotalReceived() {
+        return TrafficStats.getTotalRxBytes();
+    }
+
+    @Override
+    public long getTotalTransmitted() {
+        return TrafficStats.getTotalTxBytes();
+    }
+
+    @Override
+    public long getTotalPacketsReceived() {
+        return TrafficStats.getTotalRxPackets();
+    }
+
+    @Override
+    public long getTotalPacketsTransmitted() {
+        return TrafficStats.getTotalTxPackets();
+    }
 }
