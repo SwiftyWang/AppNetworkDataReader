@@ -46,7 +46,9 @@ public class V23DataReader implements IReader {
         NetworkStats.Bucket bucket = new NetworkStats.Bucket();
         networkStats.getNextBucket(bucket);
         networkStats.getNextBucket(bucket);
-        return bucket.getRxBytes();
+        long rxBytes = bucket.getRxBytes();
+        networkStats.close();
+        return rxBytes;
     }
 
     @Override
@@ -64,7 +66,9 @@ public class V23DataReader implements IReader {
         }
         NetworkStats.Bucket bucket = new NetworkStats.Bucket();
         networkStats.getNextBucket(bucket);
-        return bucket.getTxBytes();
+        long txBytes = bucket.getTxBytes();
+        networkStats.close();
+        return txBytes;
     }
 
     @Override
@@ -83,7 +87,9 @@ public class V23DataReader implements IReader {
         NetworkStats.Bucket bucket = new NetworkStats.Bucket();
         networkStats.getNextBucket(bucket);
         networkStats.getNextBucket(bucket);
-        return bucket.getRxPackets();
+        long rxPackets = bucket.getRxPackets();
+        networkStats.close();
+        return rxPackets;
     }
 
     @Override
@@ -101,7 +107,9 @@ public class V23DataReader implements IReader {
         }
         NetworkStats.Bucket bucket = new NetworkStats.Bucket();
         networkStats.getNextBucket(bucket);
-        return bucket.getTxPackets();
+        long txPackets = bucket.getTxPackets();
+        networkStats.close();
+        return txPackets;
     }
 
     @Override
@@ -115,7 +123,8 @@ public class V23DataReader implements IReader {
         } catch (RemoteException e) {
             return -1;
         }
-        return bucket.getRxBytes();
+        long rxBytes = bucket.getRxBytes();
+        return rxBytes;
     }
 
     @Override
@@ -129,7 +138,8 @@ public class V23DataReader implements IReader {
         } catch (RemoteException e) {
             return -1;
         }
-        return bucket.getTxBytes();
+        long txBytes = bucket.getTxBytes();
+        return txBytes;
     }
 
     @Override
@@ -143,7 +153,8 @@ public class V23DataReader implements IReader {
         } catch (RemoteException e) {
             return -1;
         }
-        return bucket.getRxPackets();
+        long rxPackets = bucket.getRxPackets();
+        return rxPackets;
     }
 
     @Override
@@ -157,7 +168,8 @@ public class V23DataReader implements IReader {
         } catch (RemoteException e) {
             return -1;
         }
-        return bucket.getTxPackets();
+        long txPackets = bucket.getTxPackets();
+        return txPackets;
     }
 
     private String getSubscriberId(Context context, int networkType) {

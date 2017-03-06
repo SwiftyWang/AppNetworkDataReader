@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.swifty.datareader.below23.BelowV21DataReader;
 import com.swifty.datareader.v23.V23DataReader;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 
 public class AppDataReader implements IReader {
+    private static final String TAG = "AppDataReader";
     private final PackageManager packageManager;
     private IReader iReader;
 
@@ -100,7 +102,18 @@ public class AppDataReader implements IReader {
     }
 
     public Drawable getAppIcon(ApplicationInfo applicationInfo) {
+        if (applicationInfo == null) return null;
         Drawable icon = packageManager.getApplicationIcon(applicationInfo);
+        return icon;
+    }
+
+    public Drawable getAppIcon(String packageName) {
+        Drawable icon = null;
+        try {
+            icon = packageManager.getApplicationIcon(packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.d(TAG, e.toString(), e);
+        }
         return icon;
     }
 }
