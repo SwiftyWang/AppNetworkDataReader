@@ -19,7 +19,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 ```java
 	dependencies {
-	        compile 'com.github.SwiftyWang:AppNetworkDataReader:0.01'
+	        compile 'com.github.SwiftyWang:AppNetworkDataReader:0.0.2'
 	}
 ```
 
