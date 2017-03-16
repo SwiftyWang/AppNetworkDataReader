@@ -10,7 +10,7 @@ import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import com.swifty.datareader.below23.BelowV21DataReader;
+import com.swifty.datareader.below23.BelowV23DataReader;
 import com.swifty.datareader.v23.V23DataReader;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class AppDataReader implements IReader {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             iReader = new V23DataReader(context);
         } else {
-            iReader = new BelowV21DataReader(context);
+            iReader = new BelowV23DataReader(context);
         }
     }
 

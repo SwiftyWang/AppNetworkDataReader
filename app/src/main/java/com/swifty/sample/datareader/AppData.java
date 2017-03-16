@@ -12,4 +12,17 @@ public class AppData {
     public long transmitted;
     public long packageReceived;
     public long packageTransmitted;
+
+    @Override
+    public String toString() {
+        return "AppData{" +
+                "Uid=" + Uid +
+                ", packageName='" + packageName + '\'' +
+                ", appName='" + appName + '\'' +
+                ", received=" + received +
+                ", transmitted=" + transmitted +
+                ", packageReceived=" + packageReceived +
+                ", packageTransmitted=" + packageTransmitted +
+                '}';
+    }
 }

@@ -43,10 +43,13 @@ public class V23DataReader implements IReader {
         } catch (RemoteException e) {
             return -1;
         }
-        NetworkStats.Bucket bucket = new NetworkStats.Bucket();
-        networkStats.getNextBucket(bucket);
-        networkStats.getNextBucket(bucket);
-        long rxBytes = bucket.getRxBytes();
+        long rxBytes = 0;
+        while (networkStats.hasNextBucket()) {
+            NetworkStats.Bucket bucket = new NetworkStats.Bucket();
+            networkStats.getNextBucket(bucket);
+            networkStats.getNextBucket(bucket);
+            rxBytes += bucket.getRxBytes();
+        }
         networkStats.close();
         return rxBytes;
     }
@@ -64,9 +67,12 @@ public class V23DataReader implements IReader {
         } catch (RemoteException e) {
             return -1;
         }
-        NetworkStats.Bucket bucket = new NetworkStats.Bucket();
-        networkStats.getNextBucket(bucket);
-        long txBytes = bucket.getTxBytes();
+        long txBytes = 0;
+        while (networkStats.hasNextBucket()) {
+            NetworkStats.Bucket bucket = new NetworkStats.Bucket();
+            networkStats.getNextBucket(bucket);
+            txBytes += bucket.getTxBytes();
+        }
         networkStats.close();
         return txBytes;
     }
@@ -84,10 +90,13 @@ public class V23DataReader implements IReader {
         } catch (RemoteException e) {
             return -1;
         }
-        NetworkStats.Bucket bucket = new NetworkStats.Bucket();
-        networkStats.getNextBucket(bucket);
-        networkStats.getNextBucket(bucket);
-        long rxPackets = bucket.getRxPackets();
+        long rxPackets = 0;
+        while (networkStats.hasNextBucket()) {
+            NetworkStats.Bucket bucket = new NetworkStats.Bucket();
+            networkStats.getNextBucket(bucket);
+            networkStats.getNextBucket(bucket);
+            rxPackets += bucket.getRxPackets();
+        }
         networkStats.close();
         return rxPackets;
     }
@@ -105,9 +114,12 @@ public class V23DataReader implements IReader {
         } catch (RemoteException e) {
             return -1;
         }
-        NetworkStats.Bucket bucket = new NetworkStats.Bucket();
-        networkStats.getNextBucket(bucket);
-        long txPackets = bucket.getTxPackets();
+        long txPackets = 0;
+        while (networkStats.hasNextBucket()) {
+            NetworkStats.Bucket bucket = new NetworkStats.Bucket();
+            networkStats.getNextBucket(bucket);
+            txPackets += bucket.getTxPackets();
+        }
         networkStats.close();
         return txPackets;
     }

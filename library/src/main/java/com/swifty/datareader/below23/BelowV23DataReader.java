@@ -23,11 +23,11 @@ import com.swifty.datareader.IReader;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class BelowV21DataReader implements IReader {
+public class BelowV23DataReader implements IReader {
 
     public final Context context;
 
-    public BelowV21DataReader(Context context) {
+    public BelowV23DataReader(Context context) {
         this.context = context;
     }
 

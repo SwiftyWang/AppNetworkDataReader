@@ -2,9 +2,11 @@ package com.swifty.sample.datareader;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.app.usage.NetworkStats;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final int MY_PERMISSIONS_REQUEST_READ_PHONE_STATE = 1;
+    private static final String TAG = MainActivity.class.getSimpleName();
     RecyclerView recyclerView;
     private ProgressDialog progress;
 
@@ -69,6 +72,38 @@ public class MainActivity extends AppCompatActivity {
                     total.packageReceived = dataReader.getTotalPacketsReceived();
                     total.packageTransmitted = dataReader.getTotalPacketsTransmitted();
                     appDatas.add(total);
+                    Log.d(TAG, total.toString());
+
+                    //add removed data usage
+                    AppData removedData = new AppData();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        removedData.Uid = NetworkStats.Bucket.UID_REMOVED;
+                    } else {
+                        removedData.Uid = -4;
+                    }
+                    removedData.appName = "removed";
+                    removedData.received = dataReader.getReceivedData(removedData.Uid);
+                    removedData.transmitted = dataReader.getDataTransmitted(removedData.Uid);
+                    removedData.packageReceived = dataReader.getPacketsReceived(removedData.Uid);
+                    removedData.packageTransmitted = dataReader.getPacketsTransmitted(removedData.Uid);
+                    appDatas.add(removedData);
+                    Log.d(TAG, removedData.toString());
+
+
+                    //add tethering data usage
+                    AppData tetheringData = new AppData();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        tetheringData.Uid = NetworkStats.Bucket.UID_TETHERING;
+                    } else {
+                        tetheringData.Uid = -5;
+                    }
+                    tetheringData.appName = "tethering";
+                    tetheringData.received = dataReader.getReceivedData(tetheringData.Uid);
+                    tetheringData.transmitted = dataReader.getDataTransmitted(tetheringData.Uid);
+                    tetheringData.packageReceived = dataReader.getPacketsReceived(tetheringData.Uid);
+                    tetheringData.packageTransmitted = dataReader.getPacketsTransmitted(tetheringData.Uid);
+                    appDatas.add(tetheringData);
+                    Log.d(TAG, tetheringData.toString());
 
                     ArrayList<ApplicationInfo> arrayList = (ArrayList<ApplicationInfo>) dataReader.getApplicationMeta();
                     for (ApplicationInfo applicationInfo : arrayList) {
@@ -81,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                         appData.packageReceived = dataReader.getPacketsReceived(applicationInfo.uid);
                         appData.packageTransmitted = dataReader.getPacketsTransmitted(applicationInfo.uid);
                         appDatas.add(appData);
+                        Log.d(TAG, appData.toString());
                     }
                     return appDatas;
                 }
