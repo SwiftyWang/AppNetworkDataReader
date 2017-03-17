@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.swifty.datareader.below23.BelowV23DataReader;
 import com.swifty.datareader.v23.V23DataReader;
@@ -54,8 +55,13 @@ public class AppDataReader implements IReader {
     }
 
     @Override
-    public long getReceivedData(int uid) {
-        return iReader.getReceivedData(uid);
+    public SparseArray<AppNetData> getAllAppData() {
+        return iReader.getAllAppData();
+    }
+
+    @Override
+    public long getDataReceived(int uid) {
+        return iReader.getDataReceived(uid);
     }
 
     @Override

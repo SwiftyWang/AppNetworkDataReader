@@ -8,7 +8,9 @@ import android.os.Build;
 import android.os.RemoteException;
 import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
+import android.util.SparseArray;
 
+import com.swifty.datareader.AppNetData;
 import com.swifty.datareader.IReader;
 
 /**
@@ -31,7 +33,7 @@ public class V23DataReader implements IReader {
     }
 
     @Override
-    public long getReceivedData(int uid) {
+    public long getDataReceived(int uid) {
         NetworkStats networkStats = null;
         try {
             networkStats = networkStatsManager.queryDetailsForUid(
@@ -190,5 +192,47 @@ public class V23DataReader implements IReader {
             return tm.getSubscriberId();
         }
         return "";
+    }
+
+    @Override
+    public SparseArray<AppNetData> getAllAppData() {
+        SparseArray<AppNetData> appNetDataMap = new SparseArray<>();
+        NetworkStats networkStats;
+        try {
+            networkStats = networkStatsManager.querySummary(ConnectivityManager.TYPE_MOBILE,
+                    getSubscriberId(context, ConnectivityManager.TYPE_MOBILE),
+                    0,
+                    System.currentTimeMillis());
+        } catch (RemoteException e) {
+            return appNetDataMap;
+        }
+        NetworkStats.Bucket bucket = new NetworkStats.Bucket();
+        while (networkStats != null && networkStats.hasNextBucket()) {
+            boolean nextBucket = networkStats.getNextBucket(bucket);
+            int absUid = Math.abs(bucket.getUid());
+            if (nextBucket) {
+                AppNetData appNetData = appNetDataMap.get(absUid);
+                if (appNetData == null) {
+                    appNetData = new AppNetData(absUid, bucket.getRxBytes(), bucket.getTxBytes(), bucket.getRxPackets(), bucket.getTxPackets(), getAppName(absUid), getPackageName(absUid));
+                    appNetDataMap.put(absUid, appNetData);
+                } else {
+                    appNetData.rx += bucket.getRxBytes();
+                    appNetData.tx += bucket.getTxBytes();
+                    appNetData.rp += bucket.getRxPackets();
+                    appNetData.tp += bucket.getTxPackets();
+                }
+            }
+        }
+        return appNetDataMap;
+    }
+
+    private String getPackageName(int absUid) {
+        String[] packagesForUid = context.getPackageManager().getPackagesForUid(absUid);
+        if (packagesForUid != null && packagesForUid.length > 1) return packagesForUid[0];
+        else return null;
+    }
+
+    private String getAppName(int absUid) {
+        return context.getPackageManager().getNameForUid(absUid);
     }
 }

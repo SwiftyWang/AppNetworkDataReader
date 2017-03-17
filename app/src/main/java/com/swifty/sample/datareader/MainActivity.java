@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.app.usage.NetworkStats;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,9 +15,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.swifty.datareader.AppDataReader;
+import com.swifty.datareader.AppNetData;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         removedData.Uid = -4;
                     }
                     removedData.appName = "removed";
-                    removedData.received = dataReader.getReceivedData(removedData.Uid);
+                    removedData.received = dataReader.getDataReceived(removedData.Uid);
                     removedData.transmitted = dataReader.getDataTransmitted(removedData.Uid);
                     removedData.packageReceived = dataReader.getPacketsReceived(removedData.Uid);
                     removedData.packageTransmitted = dataReader.getPacketsTransmitted(removedData.Uid);
@@ -98,23 +99,24 @@ public class MainActivity extends AppCompatActivity {
                         tetheringData.Uid = -5;
                     }
                     tetheringData.appName = "tethering";
-                    tetheringData.received = dataReader.getReceivedData(tetheringData.Uid);
+                    tetheringData.received = dataReader.getDataReceived(tetheringData.Uid);
                     tetheringData.transmitted = dataReader.getDataTransmitted(tetheringData.Uid);
                     tetheringData.packageReceived = dataReader.getPacketsReceived(tetheringData.Uid);
                     tetheringData.packageTransmitted = dataReader.getPacketsTransmitted(tetheringData.Uid);
                     appDatas.add(tetheringData);
                     Log.d(TAG, tetheringData.toString());
 
-                    ArrayList<ApplicationInfo> arrayList = (ArrayList<ApplicationInfo>) dataReader.getApplicationMeta();
-                    for (ApplicationInfo applicationInfo : arrayList) {
+                    SparseArray<AppNetData> allAppData = dataReader.getAllAppData();
+                    for (int i = 0; i < allAppData.size(); i++) {
+                        AppNetData appNetData = allAppData.get(allAppData.keyAt(i));
                         AppData appData = new AppData();
-                        appData.Uid = applicationInfo.uid;
-                        appData.appName = dataReader.getAppName(applicationInfo).toString();
-                        appData.packageName = applicationInfo.packageName;
-                        appData.received = dataReader.getReceivedData(applicationInfo.uid);
-                        appData.transmitted = dataReader.getDataTransmitted(applicationInfo.uid);
-                        appData.packageReceived = dataReader.getPacketsReceived(applicationInfo.uid);
-                        appData.packageTransmitted = dataReader.getPacketsTransmitted(applicationInfo.uid);
+                        appData.Uid = appNetData.uid;
+                        appData.appName = appNetData.appName;
+                        appData.packageName = appNetData.packageName;
+                        appData.received = appNetData.rx;
+                        appData.transmitted = appNetData.tx;
+                        appData.packageReceived = appNetData.rp;
+                        appData.packageTransmitted = appNetData.tp;
                         appDatas.add(appData);
                         Log.d(TAG, appData.toString());
                     }
