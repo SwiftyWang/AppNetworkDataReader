@@ -75,37 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     appDatas.add(total);
                     Log.d(TAG, total.toString());
 
-                    //add removed data usage
-                    AppData removedData = new AppData();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        removedData.Uid = NetworkStats.Bucket.UID_REMOVED;
-                    } else {
-                        removedData.Uid = -4;
-                    }
-                    removedData.appName = "removed";
-                    removedData.received = dataReader.getDataReceived(removedData.Uid);
-                    removedData.transmitted = dataReader.getDataTransmitted(removedData.Uid);
-                    removedData.packageReceived = dataReader.getPacketsReceived(removedData.Uid);
-                    removedData.packageTransmitted = dataReader.getPacketsTransmitted(removedData.Uid);
-                    appDatas.add(removedData);
-                    Log.d(TAG, removedData.toString());
-
-
-                    //add tethering data usage
-                    AppData tetheringData = new AppData();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        tetheringData.Uid = NetworkStats.Bucket.UID_TETHERING;
-                    } else {
-                        tetheringData.Uid = -5;
-                    }
-                    tetheringData.appName = "tethering";
-                    tetheringData.received = dataReader.getDataReceived(tetheringData.Uid);
-                    tetheringData.transmitted = dataReader.getDataTransmitted(tetheringData.Uid);
-                    tetheringData.packageReceived = dataReader.getPacketsReceived(tetheringData.Uid);
-                    tetheringData.packageTransmitted = dataReader.getPacketsTransmitted(tetheringData.Uid);
-                    appDatas.add(tetheringData);
-                    Log.d(TAG, tetheringData.toString());
-
+                    long totalRx = 0;
                     SparseArray<AppNetData> allAppData = dataReader.getAllAppData();
                     for (int i = 0; i < allAppData.size(); i++) {
                         AppNetData appNetData = allAppData.get(allAppData.keyAt(i));
@@ -119,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
                         appData.packageTransmitted = appNetData.tp;
                         appDatas.add(appData);
                         Log.d(TAG, appData.toString());
+                        totalRx += appData.received;
                     }
+                    Log.d(TAG, "total : " + totalRx);
                     return appDatas;
                 }
             })

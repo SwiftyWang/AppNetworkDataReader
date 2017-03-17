@@ -13,6 +13,11 @@ public class AppNetData {
     public String appName;
     public String packageName;
 
+    public AppNetData(int uid, String appName, String packageName) {
+        this.uid = uid;
+        this.appName = appName;
+        this.packageName = packageName;
+    }
 
     public AppNetData(int uid, long rx, long tx, long rp, long tp, String appName, String packageName) {
         this.uid = uid;

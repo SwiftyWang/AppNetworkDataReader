@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.TrafficStats;
 import android.util.SparseArray;
 
+import com.swifty.datareader.AppDataReader;
 import com.swifty.datareader.AppNetData;
 import com.swifty.datareader.IReader;
 
@@ -44,7 +45,16 @@ public class BelowV23DataReader implements IReader {
         SparseArray<AppNetData> appNetDataSparseArray = new SparseArray<>();
         for (PackageInfo info : packages) {
             int uid = info.applicationInfo.uid;
-            appNetDataSparseArray.put(uid, new AppNetData(uid, getDataReceived(uid), getDataTransmitted(uid), getPacketsReceived(uid), getDataTransmitted(uid), info.applicationInfo.name, info.packageName));
+            appNetDataSparseArray.put(uid, new AppNetData(uid, getDataReceived(uid), getDataTransmitted(uid), getPacketsReceived(uid), getPacketsTransmitted(uid), packageManager.getApplicationLabel(info.applicationInfo).toString(), info.packageName));
+        }
+        for (int i = 0; i < AppDataReader.defaultData.size(); i++) {
+            int uid = AppDataReader.defaultData.keyAt(i);
+            AppNetData appNetData = AppDataReader.defaultData.get(uid);
+            appNetData.rx = getDataReceived(uid);
+            appNetData.tx = getDataTransmitted(uid);
+            appNetData.rp = getPacketsReceived(uid);
+            appNetData.tp = getPacketsReceived(uid);
+            appNetDataSparseArray.put(uid, appNetData);
         }
         return appNetDataSparseArray;
     }
@@ -89,21 +99,21 @@ public class BelowV23DataReader implements IReader {
 
     @Override
     public long getTotalReceived() {
-        return TrafficStats.getMobileRxBytes();
+        return TrafficStats.getTotalRxBytes();
     }
 
     @Override
     public long getTotalTransmitted() {
-        return TrafficStats.getMobileTxBytes();
+        return TrafficStats.getTotalTxBytes();
     }
 
     @Override
     public long getTotalPacketsReceived() {
-        return TrafficStats.getMobileRxPackets();
+        return TrafficStats.getTotalRxPackets();
     }
 
     @Override
     public long getTotalPacketsTransmitted() {
-        return TrafficStats.getMobileTxPackets();
+        return TrafficStats.getTotalTxPackets();
     }
 }

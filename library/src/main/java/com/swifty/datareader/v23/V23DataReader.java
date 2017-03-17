@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.util.SparseArray;
 
+import com.swifty.datareader.AppDataReader;
 import com.swifty.datareader.AppNetData;
 import com.swifty.datareader.IReader;
 
@@ -213,14 +214,17 @@ public class V23DataReader implements IReader {
             if (nextBucket) {
                 AppNetData appNetData = appNetDataMap.get(absUid);
                 if (appNetData == null) {
-                    appNetData = new AppNetData(absUid, bucket.getRxBytes(), bucket.getTxBytes(), bucket.getRxPackets(), bucket.getTxPackets(), getAppName(absUid), getPackageName(absUid));
+                    if (AppDataReader.defaultData.get(absUid) != null) {
+                        appNetData = AppDataReader.defaultData.get(absUid);
+                    } else {
+                        appNetData = new AppNetData(absUid, getAppName(absUid), getPackageName(absUid));
+                    }
                     appNetDataMap.put(absUid, appNetData);
-                } else {
-                    appNetData.rx += bucket.getRxBytes();
-                    appNetData.tx += bucket.getTxBytes();
-                    appNetData.rp += bucket.getRxPackets();
-                    appNetData.tp += bucket.getTxPackets();
                 }
+                appNetData.rx += bucket.getRxBytes();
+                appNetData.tx += bucket.getTxBytes();
+                appNetData.rp += bucket.getRxPackets();
+                appNetData.tp += bucket.getTxPackets();
             }
         }
         return appNetDataMap;

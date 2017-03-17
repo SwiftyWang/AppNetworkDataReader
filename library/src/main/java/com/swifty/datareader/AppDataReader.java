@@ -24,6 +24,17 @@ public class AppDataReader implements IReader {
     private static final String TAG = "AppDataReader";
     private final PackageManager packageManager;
     private IReader iReader;
+    public static final SparseArray<AppNetData> defaultData;
+
+    static {
+        defaultData = new SparseArray<>();
+        defaultData.put(1, new AppNetData(1, "Total Traffic", null));
+        defaultData.put(4, new AppNetData(4, "Removed App", null));
+        defaultData.put(5, new AppNetData(5, "Tethering Traffic (WiFi Hotspot)", null));
+        defaultData.put(7, new AppNetData(7, "Tethering Traffic (USB)", null));
+        defaultData.put(10, new AppNetData(10, "Tethering Traffic (BlueTooth)", null));
+        defaultData.put(11, new AppNetData(11, "Tethering Traffic (Unknown)", null));
+    }
 
     public AppDataReader(Context context) {
         packageManager = context.getPackageManager();
