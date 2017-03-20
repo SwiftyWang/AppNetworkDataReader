@@ -28,6 +28,7 @@ public class AppDataReader implements IReader {
 
     static {
         defaultData = new SparseArray<>();
+        defaultData.put(0, new AppNetData(0, "Root UID", null));
         defaultData.put(1, new AppNetData(1, "Total Traffic", null));
         defaultData.put(4, new AppNetData(4, "Removed App", null));
         defaultData.put(5, new AppNetData(5, "Tethering Traffic (WiFi Hotspot)", null));
