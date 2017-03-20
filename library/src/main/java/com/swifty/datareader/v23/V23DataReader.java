@@ -227,6 +227,7 @@ public class V23DataReader implements IReader {
                 appNetData.tp += bucket.getTxPackets();
             }
         }
+        if (networkStats != null) networkStats.close();
         return appNetDataMap;
     }
 
